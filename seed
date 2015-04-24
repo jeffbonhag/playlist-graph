@@ -1,0 +1,16 @@
+API="http://developer.echonest.com/api/v4/"
+API_KEY="G9NEVKUK91NLLSSAH"
+NEST=$1
+
+playlist() {
+  while read SEED; do
+    sleep 3
+    curl -s "${API}playlist/basic?api_key=${API_KEY}&song_id=${SEED}" |
+      jq ".response.songs | map(.id)" |
+      tr -d '[",]' |
+      sed 's/^ *//; s/ *$//; /^$/d' |
+      tee ${SEED} | playlist
+  done
+}
+
+echo ${NEST} | playlist

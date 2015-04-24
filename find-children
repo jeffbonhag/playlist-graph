@@ -1,0 +1,17 @@
+#!/usr/bin/perl
+use strict;
+
+print "digraph echonest {\n";
+
+foreach my $seed (@ARGV) {
+  open my $fh, $seed;
+  chomp(my @songs = <$fh>);
+
+  # add seed to front of list
+  unshift(@songs, $seed);
+   
+  print join(" -> ", @songs), ";\n";
+}
+
+print "}\n";
+
