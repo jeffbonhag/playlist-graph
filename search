@@ -1,0 +1,23 @@
+#!/usr/bin/ruby
+
+require 'rest-client'
+require 'dotenv'
+
+Dotenv.load
+
+artist = ARGV[0]
+title = ARGV[1]
+
+response = RestClient.get 'http://developer.echonest.com/api/v4/song/search',
+  {:params => {:api_key => ENV['API_KEY'],
+               :artist => artist,
+               :title => title}}
+
+data = JSON.parse(response)
+songs = data['response']['songs']
+songs.each do |song|
+  p song['id']
+  p song['artist_name']
+  p song['title']
+end
+
